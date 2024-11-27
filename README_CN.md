@@ -4,11 +4,11 @@
  * @Author: ThreeStones1029 2320218115@qq.com
  * @Date: 2024-11-27 12:35:08
  * @LastEditors: ShuaiLei
- * @LastEditTime: 2024-11-27 22:10:19
+ * @LastEditTime: 2024-11-27 22:16:20
 -->
 # 原项目：yolov5用于旋转目标检测
 
-# 改进后：yolov5用于多任务旋转目标检测和关键点识别
+[Origin Project：Rotation detection using the improved yolov5](https://github.com/hukaixuan19970627/yolov5_obb)
 
 ## 说明：改进后，本项目进行多任务的目标检测和关键点输出
 
