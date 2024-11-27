@@ -5,28 +5,28 @@
     "version": "0.2.0",
     "configurations": [
         // train
-        // {
-        //     "name": "Python Debugger: Current File",
-        //     "type": "debugpy",
-        //     "request": "launch",
-        //     "program": "${file}",
-        //     "console": "integratedTerminal",
-        //     "args": ["--weights", "",
-        //              "--data", "data/buu_rotate.yaml",
-        //              "--hyp", "data/hyps/obb/hyp_buu_keypoints.yaml",
-        //              "--epochs", "500",
-        //              "--batch-size", "8",
-        //              "--img", "1024",
-        //              "--device", "0"]
-        // }
-
-        // val
         {
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
+            "args": ["--weights", "",
+                     "--data", "data/buu_rotate.yaml",
+                     "--hyp", "data/hyps/obb/hyp_buu_keypoints.yaml",
+                     "--epochs", "500",
+                     "--batch-size", "8",
+                     "--img", "1024",
+                     "--device", "0"]
         }
+
+        // val
+        // {
+        //     "name": "Python Debugger: Current File",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "program": "${file}",
+        //     "console": "integratedTerminal",
+        // }
     ]
 }
