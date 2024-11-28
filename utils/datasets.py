@@ -397,6 +397,7 @@ class LoadImagesAndLabels(Dataset):
         self.stride = stride
         self.path = path
         self.albumentations = Albumentations() if augment else None
+        self.cls_names = cls_names
         if isinstance(cls_names, dict):
             self.cls_names = list(cls_names.values())
 

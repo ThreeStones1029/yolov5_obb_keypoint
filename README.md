@@ -4,7 +4,7 @@
  * @Author: ThreeStones1029 2320218115@qq.com
  * @Date: 2024-11-27 12:35:08
  * @LastEditors: ShuaiLei
- * @LastEditTime: 2024-11-27 22:31:09
+ * @LastEditTime: 2024-11-28 10:33:09
 -->
 # Yolov5 for Oriented Object Detection 
 
@@ -18,6 +18,15 @@
 
 
 ## 2、Environment Install
+
+
+## 3、Dataset Preprocess
+
+在原有的数据格式基础上，加入了点的坐标
+
+~~~
+x1, y1, x2, y2, x3, y3, x4, y4, keypoint_x, keypoint_y, 
+~~~
 
 
 ## 3、Train
