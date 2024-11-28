@@ -4,7 +4,7 @@
  * @Author: ThreeStones1029 2320218115@qq.com
  * @Date: 2024-11-27 12:35:08
  * @LastEditors: ShuaiLei
- * @LastEditTime: 2024-11-28 20:54:04
+ * @LastEditTime: 2024-11-28 20:59:25
 -->
 # Yolov5 for Oriented Object Detection 
 
@@ -37,19 +37,19 @@ x1    y1    x2     y2    x3    y3    x4    y4    keypoint_x   keypoint_y  classn
 ~~~
 
 
-## 3、Train
+## 4、Train
 
 ~~~base
 python train_keypoints.py --weights "" --data data/buu_rotate.yaml --hyp data/hyps/obb/hyp_buu_keypoints.yaml --epochs 500 --batch-size 8 --img 1024 --device 0
 ~~~
 
-## 4、Eval
+## 5、Eval
 
 ~~~base
 python val_keypoints.py --data data/buu_rotate.yaml --weights runs/train/exp/weights/best.pt --batch-size 8 -img 1024 --device 0
 ~~~
 
-## 5、Detect
+## 6、Detect
 
 ~~~base
 python detect_keypoints.py --weights runs/train/exp/weights/best.pt --source dataset/BUU/test/images -img 1024 --device 0
