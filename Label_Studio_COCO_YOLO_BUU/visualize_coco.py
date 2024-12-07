@@ -243,10 +243,10 @@ if __name__ == "__main__":
     # vis = VisCoCo("datasets/miccai/buu/annotations/buu_5800_val.json", "datasets/miccai/buu/val", "datasets/miccai/buu/vis")
     # vis.visualize_bboxes_in_image(os.path.join("datasets/miccai/buu/val", "0126-F-026Y1.jpg"))
 
-    vis = VisCoCo("dataset/BUU/test/bbox_test.json", 
-                    "dataset/BUU/test/images", 
-                    "dataset/BUU/test/gt",
-                    "dataset/BUU/test/rotate_gt")
+    vis = VisCoCo("dataset/xray20241203/val/bbox_val.json", 
+                    "dataset/xray20241203/val/images", 
+                    "dataset/xray20241203/val/gt",
+                    "dataset/xray20241203/val/rotate_gt")
     # vis.visualize_bboxes_in_images()
     vis.visualize_rotate_bboxes_in_images()
 

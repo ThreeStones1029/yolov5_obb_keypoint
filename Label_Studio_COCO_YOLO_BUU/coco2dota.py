@@ -9,7 +9,7 @@ LastEditTime: 2024-11-18 15:18:06
 import numpy as np
 from pycocotools.coco import COCO
 from common import create_folder, join
-
+import os
 
 def COCO2DOTA(coco_json_path, dota_txt_save_folder, add_keypoints=False):
     """
@@ -20,7 +20,7 @@ def COCO2DOTA(coco_json_path, dota_txt_save_folder, add_keypoints=False):
     for image in coco.dataset["images"]:
         filename = image["file_name"]
         if filename.endswith(".png") or filename.endswith(".jpg") or filename.endswith(".bmp") or filename.endswith(".jpeg"):
-            filename_no_ext = filename.split(".")[0]
+            filename_no_ext = os.path.splitext(filename)[0]
         dota_file_path = join(dota_txt_save_folder, filename_no_ext + ".txt")
         dota_annotations = []
         for ann in coco.imgToAnns[image["id"]]:
@@ -42,12 +42,12 @@ def COCO2DOTA(coco_json_path, dota_txt_save_folder, add_keypoints=False):
 
 
 if __name__ == "__main__":
-    COCO2DOTA("dataset/BUU/test/bbox_test.json",
-              "dataset/BUU/test/labelTxt_points",
+    COCO2DOTA("dataset/xray20241203/test/bbox_test.json",
+              "dataset/xray20241203/test/labelTxt_points",
               add_keypoints=True)
-    COCO2DOTA("dataset/BUU/train/bbox_train.json",
-              "dataset/BUU/train/labelTxt_points",
+    COCO2DOTA("dataset/xray20241203/train/bbox_train.json",
+              "dataset/xray20241203/train/labelTxt_points",
               add_keypoints=True)
-    COCO2DOTA("dataset/BUU/val/bbox_val.json",
-              "dataset/BUU/val/labelTxt_points",
+    COCO2DOTA("dataset/xray20241203/val/bbox_val.json",
+              "dataset/xray20241203/val/labelTxt_points",
               add_keypoints=True)

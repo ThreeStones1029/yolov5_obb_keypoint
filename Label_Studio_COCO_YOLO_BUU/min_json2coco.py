@@ -120,8 +120,12 @@ class Min_json2coco:
                     if "sentiment" not in img_info.keys() or ("sentiment" in img_info.keys() and img_info["sentiment"] == "False"): # 排除标注困难的
                         img = {}
                         img['id'] = img_info['id']
-                        img['type'] = img_info['type']
-                        img['L4L6'] = img_info['L4L6']
+                        if 'type' in img_info:
+                            img['type'] = img_info['type']
+                        if 'L4L6' in img_info:
+                            img['L4L6'] = img_info['L4L6']
+                        if 'source' in img_info:
+                            img['source'] = img_info['source']
                         img['file_name'] = os.path.basename(img_info['img'])
                         img['width'] = img_info["bbox"][0]['original_width']
                         img['height'] = img_info["bbox"][0]['original_height']
@@ -129,8 +133,12 @@ class Min_json2coco:
                 else:
                     img = {}
                     img['id'] = img_info['id']
-                    img['type'] = img_info['type']
-                    img['L4L6'] = img_info['L4L6']
+                    if 'type' in img_info:
+                        img['type'] = img_info['type']
+                    if 'L4L6' in img_info:
+                        img['L4L6'] = img_info['L4L6']
+                    if 'source' in img_info:
+                        img['source'] = img_info['source']
                     img['file_name'] = os.path.basename(img_info['img'])
                     img['width'] = img_info["bbox"][0]['original_width']
                     img['height'] = img_info["bbox"][0]['original_height']
@@ -277,12 +285,12 @@ if __name__ == "__main__":
 
     # print(len(choose_ids))
 
-    conversion = Min_json2coco(annotation_file="dataset/BUU/project-29-at-2024-11-20-05-45-e9719f92.json", 
+    conversion = Min_json2coco(annotation_file="dataset/xray20241203/project-37-at-2024-12-06-12-44-1ce4d305.json", 
                                choose_ids='all',
                                is_horizontal_bbox_conver=False,
                                is_rotation_bbox_conver=True,
                                is_add_keypoints=True,
                                is_del_hard=False,
-                               save_path="dataset/BUU/buu_rotate_keypoint.json")
+                               save_path="dataset/xray20241203/xray20241203_rotate_keypoint.json")
 
     print(len(conversion.imgs))
