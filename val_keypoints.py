@@ -434,8 +434,8 @@ def run(data,
 
 def parse_opt():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data', type=str, default=ROOT / 'data/buu_rotate.yaml', help='dataset.yaml path')
-    parser.add_argument('--weights', nargs='+', type=str, default="runs/train/rotate_point2/weights/best.pt", help='model.pt path(s)')
+    parser.add_argument('--data', type=str, default=ROOT / 'data/xray20241203_semantic.yaml', help='dataset.yaml path')
+    parser.add_argument('--weights', nargs='+', type=str, default="runs/train/xray20241203_keypoints_semantic_buu_pretrain/weights/best.pt", help='model.pt path(s)')
     parser.add_argument('--batch-size', type=int, default=8, help='batch size')
     parser.add_argument('--imgsz', '--img', '--img-size', type=int, default=1024, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.01, help='confidence threshold')
@@ -453,7 +453,7 @@ def parse_opt():
     parser.add_argument('--save-json', default=True, action='store_true', help='save a COCO-JSON results file')
     parser.add_argument('--save-results_xlsx', default=True, action='store_true', help='save eval results to xlsx file')
     parser.add_argument('--project', default=ROOT / 'runs/val', help='save to project/name')
-    parser.add_argument('--name', default='rotate_point2_val', help='save to project/name')
+    parser.add_argument('--name', default='xray20241203_keypoints_semantic_buu_pretrain', help='save to project/name')
     parser.add_argument('--exist-ok', default=True, action='store_true', help='existing project/name ok, do not increment')
     parser.add_argument('--half', action='store_true', help='use FP16 half-precision inference')
     parser.add_argument('--dnn', action='store_true', help='use OpenCV DNN for ONNX inference')

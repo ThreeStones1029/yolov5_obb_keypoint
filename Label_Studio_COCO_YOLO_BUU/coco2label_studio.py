@@ -4,7 +4,7 @@ version:
 Author: ThreeStones1029 2320218115@qq.com
 Date: 2024-12-03 16:16:03
 LastEditors: ShuaiLei
-LastEditTime: 2024-12-03 22:13:24
+LastEditTime: 2024-12-03 17:05:11
 '''
 from pycocotools.coco import COCO
 from json_process import save_json_file, load_json_file
@@ -152,13 +152,13 @@ def add_images(images_folder, label_studio_annotation_file, source, dataset_name
         annotation_id += 1
         import_id += 1
     save_json_file(label_studio_dataset, new_label_studio_annotation_file)
-    print(image_id - 1)
+    print(image_id)
 
 
 if __name__ == "__main__":
     format_conver = COCO2LabelStudio("dataset/xray20240119/annotations/train_instance.json", "xray20241203")
     format_conver.run("dataset/xray20240119/xray20240119_label_studio.json")
-    print(format_conver.image_id - 1)
+    print(format_conver.image_id)
     add_images(images_folder = "dataset/xray20241203/tuodao",
                label_studio_annotation_file = "dataset/xray20240119/xray20240119_label_studio.json",
                source = "tuodao",

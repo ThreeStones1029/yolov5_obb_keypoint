@@ -29,14 +29,16 @@ from bbox_utils import is_point_in_polygon_area
 class Min_json2coco:
     def __init__(self, annotation_file=None, 
                  choose_ids="all", 
+                 choose_category_name_list = "all",
                  is_horizontal_bbox_conver = False,
                  is_rotation_bbox_conver = True, 
                  is_add_keypoints = False,
-                 is_del_hard=True, 
+                 is_del_hard=True,
                  save_path=None):
         """
         param self.is_del_hard:是否删除难标注的
         param self.choose_ids 选择需要的图片id
+        param self.choose_category_name_list 选择需要的类别
         param self.is_horizontal_bbox_conver 是否进行水平框的标注转换
         param self.is_rotation_bbox_conver 是否需要旋转框标注转换
         param self.is_add_keypoints 是否加入关键点标注
@@ -46,6 +48,7 @@ class Min_json2coco:
         self.annotations_file = annotation_file
         self.save_path = save_path
         self.choose_ids = choose_ids
+        self.choose_category_name_list = choose_category_name_list
         self.is_horizontal_bbox_conver = is_horizontal_bbox_conver
         self.is_rotation_bbox_conver = is_rotation_bbox_conver
         self.is_add_keypoints = is_add_keypoints
@@ -72,7 +75,7 @@ class Min_json2coco:
         self.save_dataset()
 
     def add_info(self):
-        self.info = {"description": "This dataset is labeled as visible to the human eye and labeled: normal,fracture",
+        self.info = {"description": "This dataset is labeled as visible to the human eye and labeled: L5-C1, Pelvis, rib",
                      "contribute": "Shuai lei",
                      "version": "1.0",
                      "date": datetime.today().strftime('%Y-%m-%d')}
@@ -82,21 +85,37 @@ class Min_json2coco:
     def add_categories(self):
         categories = []
         cats = {}
-        categories.append({"id": 1,
-                           "name": "Pelvis", 
-                           "supercategory": "vertebrae"})
-        for i in range(2, 7):
-            categories.append({"id": i,
-                               "name": "L" + str(7-i),
-                               "supercategory": "vertebrae"}) 
-        for i in range(7, 19):
-            categories.append({"id": i,
-                               "name": "T" + str(19-i),
-                               "supercategory": "vertebrae"}) 
-        for i in range(19, 26):
-            categories.append({"id": i,
-                               "name": "C" + str(26-i),
-                               "supercategory": "vertebrae"})  
+        if self.choose_category_name_list != "all":
+            category_id = 1
+            for category_name in self.choose_category_name_list:
+                if category_name == "Pelvis" or category_name == "pelvis" or category_name == "rib" or category_name == "Rib":
+                    categories.append({"id": category_id,
+                                        "name": category_name, 
+                                        "supercategory": "bone"})
+                else:
+                    categories.append({"id": category_id,
+                                        "name": category_name, 
+                                        "supercategory": "vertebrae"})
+                category_id += 1
+        else:
+            categories.append({"id": 1,
+                                "name": "Pelvis",
+                                "supercategory": "bone"}) 
+            for i in range(2, 7):
+                categories.append({"id": i,
+                                "name": "L" + str(7-i),
+                                "supercategory": "vertebrae"}) 
+            for i in range(7, 19):
+                categories.append({"id": i,
+                                "name": "T" + str(19-i),
+                                "supercategory": "vertebrae"}) 
+            for i in range(19, 26):
+                categories.append({"id": i,
+                                "name": "C" + str(26-i),
+                                "supercategory": "vertebrae"})  
+            categories.append({"id": 26,
+                            "name": "rib", 
+                            "supercategory": "bone"})
         # categories.append({"id": 1,
         #                    "name": "normal", 
         #                    "supercategory": "vertebrae"})
@@ -114,10 +133,26 @@ class Min_json2coco:
         images = []
         imgs = {}
         for img_info in self.label_studio_annotations:
-            if  (self.choose_ids=="all" or img_info['id'] in self.choose_ids) and img_info['annotator'] != 3: # 排除原始BUU数据自带的标注,同时挑选需要的图片
-                # 是否需要删除标注困难的
-                if self.is_del_hard:
-                    if "sentiment" not in img_info.keys() or ("sentiment" in img_info.keys() and img_info["sentiment"] == "False"): # 排除标注困难的
+            # BUU point: vertebrae center
+            # if (img_info['type'] == "LA" and img_info["updated_at"][0:4] == "2025" and img_info["updated_at"][5:7] == "01" and int(img_info["updated_at"][8:10]) > 20) or (img_info['type'] == "AP"):
+            if img_info["created_at"][0:4] == "2025" and img_info["created_at"][5:7] == "02" and img_info["updated_at"][0:4] == "2025" and img_info["updated_at"][5:7] == "02":
+                if  (self.choose_ids=="all" or img_info['id'] in self.choose_ids) and img_info['annotator'] != 3: # 排除原始BUU数据自带的标注,同时挑选需要的图片
+                    # 是否需要删除标注困难的
+                    if self.is_del_hard:
+                        if "sentiment" not in img_info.keys() or ("sentiment" in img_info.keys() and img_info["sentiment"] == "False"): # 排除标注困难的
+                            img = {}
+                            img['id'] = img_info['id']
+                            if 'type' in img_info:
+                                img['type'] = img_info['type']
+                            if 'L4L6' in img_info:
+                                img['L4L6'] = img_info['L4L6']
+                            if 'source' in img_info:
+                                img['source'] = img_info['source']
+                            img['file_name'] = os.path.basename(img_info['img'])
+                            img['width'] = img_info["bbox"][0]['original_width']
+                            img['height'] = img_info["bbox"][0]['original_height']
+                            images.append(img)
+                    else:
                         img = {}
                         img['id'] = img_info['id']
                         if 'type' in img_info:
@@ -130,19 +165,6 @@ class Min_json2coco:
                         img['width'] = img_info["bbox"][0]['original_width']
                         img['height'] = img_info["bbox"][0]['original_height']
                         images.append(img)
-                else:
-                    img = {}
-                    img['id'] = img_info['id']
-                    if 'type' in img_info:
-                        img['type'] = img_info['type']
-                    if 'L4L6' in img_info:
-                        img['L4L6'] = img_info['L4L6']
-                    if 'source' in img_info:
-                        img['source'] = img_info['source']
-                    img['file_name'] = os.path.basename(img_info['img'])
-                    img['width'] = img_info["bbox"][0]['original_width']
-                    img['height'] = img_info["bbox"][0]['original_height']
-                    images.append(img)
         self.dataset['images'] = images
         for img in self.dataset['images']:
             imgs[img['id']] = img
@@ -154,12 +176,15 @@ class Min_json2coco:
         anns = {}
         # 对于所有图片
         for img_info in self.label_studio_annotations:
-            if  (self.choose_ids=="all" or img_info['id'] in self.choose_ids) and img_info['annotator'] != 3: # 排除原始BUU数据自带的标注,同时挑选需要的图片
-                if self.is_del_hard:
-                    if "sentiment" not in img_info.keys() or ("sentiment" in img_info.keys() and img_info["sentiment"] == "False"): # 排除标注困难的
+            # BUU point: vertebrae center
+            # if (img_info['type'] == "LA" and img_info["updated_at"][0:4] == "2025" and img_info["updated_at"][5:7] == "01" and int(img_info["updated_at"][8:10]) > 20) or (img_info['type'] == "AP"):
+            if img_info["created_at"][0:4] == "2025" and img_info["created_at"][5:7] == "02" and img_info["updated_at"][0:4] == "2025" and img_info["updated_at"][5:7] == "02":
+                if  (self.choose_ids=="all" or img_info['id'] in self.choose_ids) and img_info['annotator'] != 3: # 排除原始BUU数据自带的标注,同时挑选需要的图片
+                    if self.is_del_hard:
+                        if "sentiment" not in img_info.keys() or ("sentiment" in img_info.keys() and img_info["sentiment"] == "False"): # 排除标注困难的
+                            self.single_add_annotations(img_info)
+                    else:
                         self.single_add_annotations(img_info)
-                else:
-                    self.single_add_annotations(img_info)
         
         imgToAnns, catToImgs = defaultdict(list), defaultdict(list)
         for ann in self.dataset['annotations']:
@@ -212,6 +237,8 @@ class Min_json2coco:
             ann['image_id'] = img_info['id']
             ann['iscrowd'] = 0
             cat_name = bbox["rectanglelabels"][0]
+            if self.choose_category_name_list != "all" and cat_name not in self.choose_category_name_list:
+                continue
             ann['category_id'] = cat_name2id[cat_name]
             ann['category_name'] = cat_name
 
@@ -227,6 +254,10 @@ class Min_json2coco:
                 # 加入关键点
                 if self.is_add_keypoints:
                     keypoints = self.get_keypoints(img_info["keypoints"], bbox_points)
+                    if keypoints == []:
+                        k_x = (4*x1 + 2*w) / 4
+                        k_y = (4*y1 + 2*h) / 4
+                        keypoints = [[k_x, k_y]]
                     ann["points"] = keypoints
 
             # 加入旋转检测框
@@ -252,6 +283,10 @@ class Min_json2coco:
                 # 加入关键点
                 if self.is_add_keypoints:
                     keypoints = self.get_keypoints(img_info["keypoints"], ann['rotation_bbox'])
+                    if keypoints == []:
+                        k_x = (x1 + x2 + x3 + x4) / 4
+                        k_y = (y1 + y2 + y3 + y4) / 4
+                        keypoints = [[k_x, k_y]]
                     ann["points"] = keypoints
 
             ann["width"] = w
@@ -285,12 +320,17 @@ if __name__ == "__main__":
 
     # print(len(choose_ids))
 
-    conversion = Min_json2coco(annotation_file="dataset/xray20241203/project-37-at-2024-12-06-12-44-1ce4d305.json", 
+    ["L5", "L4", "L3", "L2", "L1",
+    "T12", "T11", "T10", "T9", "T8", "T7", "T6", "T5", "T4", "T3", "T2", "T1",
+    "C7", "C6", "C5", "C4", "C3", "C2", "C1"]
+
+    conversion = Min_json2coco(annotation_file="dataset/xray20241203/xray20241203_min_json2.json", 
                                choose_ids='all',
+                               choose_category_name_list="all",
                                is_horizontal_bbox_conver=False,
                                is_rotation_bbox_conver=True,
                                is_add_keypoints=True,
                                is_del_hard=False,
-                               save_path="dataset/xray20241203/xray20241203_rotate_keypoint.json")
+                               save_path="dataset/xray20241203/xray20241203_rotate_keypoints_all2.json")
 
     print(len(conversion.imgs))

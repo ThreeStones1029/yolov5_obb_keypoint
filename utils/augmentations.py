@@ -168,9 +168,9 @@ def random_perspective(im, targets=(), segments=(), degrees=10, translate=.1, sc
     M = T @ S @ R @ P @ C  # order of operations (right to left) is IMPORTANT
     if (border[0] != 0) or (border[1] != 0) or (M != np.eye(3)).any():  # image changed
         if perspective:
-            im2 = cv2.warpPerspective(im, M, dsize=(width, height), borderValue=(114, 114, 114))
+            im = cv2.warpPerspective(im, M, dsize=(width, height), borderValue=(114, 114, 114))
         else:  # affine
-            im2 = cv2.warpAffine(im, M[:2], dsize=(width, height), borderValue=(114, 114, 114))
+            im = cv2.warpAffine(im, M[:2], dsize=(width, height), borderValue=(114, 114, 114))
 
     # Visualize
     # import matplotlib.pyplot as plt

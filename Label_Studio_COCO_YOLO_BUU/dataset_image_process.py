@@ -17,6 +17,7 @@ def according_coco_json_copy_images(coco_json_file_path, images_folder, save_ima
     coco_json_file_path: coco json文件位置
     images_folder: 保存的图像文件位置
     """
+    os.makedirs(save_images_folder, exist_ok=True)
     dataset = load_json_file(coco_json_file_path)
     for image in dataset["images"]:
         if image["type"] == "AP":
@@ -27,4 +28,4 @@ def according_coco_json_copy_images(coco_json_file_path, images_folder, save_ima
 
 
 if __name__ == "__main__":
-    according_coco_json_copy_images("dataset/BUU/buu_rotate.json", "/data/share/ShuaiLei/BUU_LSPINEv1", "dataset/BUU/images")
+    according_coco_json_copy_images("dataset/BUU/buu_rotate_point.json", "/data/share/ShuaiLei/BUU_LSPINEv1", "dataset/BUU/images")

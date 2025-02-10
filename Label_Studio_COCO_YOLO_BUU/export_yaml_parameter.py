@@ -22,4 +22,4 @@ def according_coco_json_export_yaml_parameter(coco_json_path):
 
 
 if __name__ == "__main__":
-    according_coco_json_export_yaml_parameter("dataset/BUU/buu_rotate.json")
+    according_coco_json_export_yaml_parameter("dataset/BUU/buu_rotate_keypoints2.json")

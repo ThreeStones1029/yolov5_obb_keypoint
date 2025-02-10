@@ -49,7 +49,7 @@ def assign_images_split(input_root, annotations_path, output_root):
     # 选定图片作为训练集、验证集（从指定json文件里面选）
     assign_train_images_path = join(input_root, "train", "images")
     assign_val_images_path = join(input_root, "val", "images")
-    assign_test_images_path = join(input_root, "test", "images")
+    
     def get_images(assign_images_path, images):
         assign_images = []
         for root, dirs, files in os.walk(assign_images_path):
@@ -59,29 +59,36 @@ def assign_images_split(input_root, annotations_path, output_root):
         return assign_images
     train_images = get_images(assign_train_images_path, images)
     val_images = get_images(assign_val_images_path, images)
-    test_images = get_images(assign_test_images_path, images)
 
     # 根据图片id分配annotations
     def filter_annotations(annotations, image_ids):
         return [ann for ann in annotations if ann["image_id"] in image_ids]
     train_ann = filter_annotations(annotations, [img["id"] for img in train_images])
     val_ann = filter_annotations(annotations, [img["id"] for img in val_images])
-    test_ann = filter_annotations(annotations, [img["id"] for img in test_images])
+
     # 生成train.json, val.json, test.json
     train_json = {"info": annotations_data["info"], "images": train_images, "annotations": train_ann, "categories": categories}
     val_json = {"info": annotations_data["info"], "images": val_images, "annotations": val_ann, "categories": categories}
-    test_json = {"info": annotations_data["info"], "images": test_images, "annotations": test_ann, "categories": categories}
 
-    save_json_file(train_json, join(output_root, "train", "bbox_train.json"))
-    save_json_file(val_json,join(output_root, "val", "bbox_val.json"))
-    save_json_file(test_json, join(output_root,"test", "bbox_test.json"))
+    save_json_file(train_json, join(output_root, "train", "rotate_bbox_keypoints_train_all2.json"))
+    save_json_file(val_json,join(output_root, "val", "rotate_bbox_keypoints_val_all2.json"))
+
+    if os.path.exists(join(input_root, "test")):
+        assign_test_images_path = join(input_root, "test", "images")
+        test_images = get_images(assign_test_images_path, images)
+        test_ann = filter_annotations(annotations, [img["id"] for img in test_images])
+        test_json = {"info": annotations_data["info"], "images": test_images, "annotations": test_ann, "categories": categories}
+        save_json_file(test_json, join(output_root,"test", "rotate_bbox_keypoints_test_all2.json"))
 
     print("数据集划分完成！")
 
 
 if __name__ == "__main__":
-    # random_split_coco_dataset("dataset/BUU/images",
-    #                            "dataset/BUU/buu_rotate.json",
-    #                            "dataset/BUU/split_dataset",
+    # random_split_coco_dataset("dataset/xray20241203/images",
+    #                           "dataset/xray20241203/xray20241203_rotate_keypoints_all.json",
+    #                           "dataset/xray20241203/split_dataset",
     #                           {"train": 0.6, "val": 0.2, "test": 0.2})
-    assign_images_split("dataset/BUU", "dataset/BUU/buu_rotate_keypoint.json","dataset/BUU")
+
+    assign_images_split("dataset/xray20241203", "dataset/xray20241203/xray20241203_rotate_keypoints_all2.json","dataset/xray20241203")
+
+    # assign_images_split("dataset/BUU", "dataset/BUU/buu_roate_keypoints2.json","dataset/BUU")

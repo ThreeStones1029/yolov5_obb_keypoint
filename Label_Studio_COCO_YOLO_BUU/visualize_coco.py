@@ -38,17 +38,17 @@ class VisCoCo(COCO):
         多张图片可视化水平框
         """
         files_path = self.get_files_path()
-        # vis = []
-        # for i in tqdm(range(len(sorted(files_path))), total=len(files_path), desc="vis bbox"):
-        #     if  os.path.basename(files_path[i]) in self.file_name2img_id.keys():
-        #         vis.append(Process(target=self.visualize_bboxes_in_image, args=(files_path[i],)))
-        #         vis[i].start()
-        # for i in range(len(sorted(files_path))):
-        #     if  os.path.basename(files_path[i]) in self.file_name2img_id.keys():
-        #         vis[i].join()
+        vis = []
         for i in tqdm(range(len(sorted(files_path))), total=len(files_path), desc="vis bbox"):
             if  os.path.basename(files_path[i]) in self.file_name2img_id.keys():
-                self.visualize_bboxes_in_image(files_path[i])
+                vis.append(Process(target=self.visualize_bboxes_in_image, args=(files_path[i],)))
+                vis[i].start()
+        for i in range(len(sorted(files_path))):
+            if  os.path.basename(files_path[i]) in self.file_name2img_id.keys():
+                vis[i].join()
+        # for i in tqdm(range(len(sorted(files_path))), total=len(files_path), desc="vis bbox"):
+        #     if  os.path.basename(files_path[i]) in self.file_name2img_id.keys():
+        #         self.visualize_bboxes_in_image(files_path[i])
         
 
     def visualize_bboxes_in_image(self, file_path):
@@ -243,10 +243,14 @@ if __name__ == "__main__":
     # vis = VisCoCo("datasets/miccai/buu/annotations/buu_5800_val.json", "datasets/miccai/buu/val", "datasets/miccai/buu/vis")
     # vis.visualize_bboxes_in_image(os.path.join("datasets/miccai/buu/val", "0126-F-026Y1.jpg"))
 
-    vis = VisCoCo("dataset/xray20241203/val/bbox_val.json", 
-                    "dataset/xray20241203/val/images", 
-                    "dataset/xray20241203/val/gt",
-                    "dataset/xray20241203/val/rotate_gt")
+    vis = VisCoCo("dataset/xray20241203/train/rotate_bbox_keypoints_train_instance2.json", 
+                    "dataset/xray20241203/train/images", 
+                    "dataset/xray20241203/train/gt",
+                    "dataset/xray20241203/train/rotate_gt")
+    # vis = VisCoCo("dataset/BUU/buu_roate_keypoints2.json", 
+    #                 "dataset/BUU/images", 
+    #                 "dataset/BUU/gt",
+    #                 "dataset/BUU/rotate_gt")
     # vis.visualize_bboxes_in_images()
     vis.visualize_rotate_bboxes_in_images()
 

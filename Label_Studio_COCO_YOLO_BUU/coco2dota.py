@@ -11,6 +11,7 @@ from pycocotools.coco import COCO
 from common import create_folder, join
 import os
 
+
 def COCO2DOTA(coco_json_path, dota_txt_save_folder, add_keypoints=False):
     """
     将coco格式数据转为dota格式
@@ -42,12 +43,54 @@ def COCO2DOTA(coco_json_path, dota_txt_save_folder, add_keypoints=False):
 
 
 if __name__ == "__main__":
-    COCO2DOTA("dataset/xray20241203/test/bbox_test.json",
-              "dataset/xray20241203/test/labelTxt_points",
+    # COCO2DOTA("dataset/BUU/train/bbox_train2.json",
+    #           "dataset/BUU/train/labelTxt_points2",
+    #           add_keypoints=True)
+    # COCO2DOTA("dataset/BUU/val/bbox_val2.json",
+    #           "dataset/BUU/val/labelTxt_points2",
+    #           add_keypoints=True)
+    
+
+    COCO2DOTA("dataset/xray20241203/train/rotate_bbox_keypoints_train_instance2.json",
+              "dataset/xray20241203/train/labelTxt_keypoints_instance2",
               add_keypoints=True)
-    COCO2DOTA("dataset/xray20241203/train/bbox_train.json",
-              "dataset/xray20241203/train/labelTxt_points",
+    COCO2DOTA("dataset/xray20241203/val/rotate_bbox_keypoints_val_instance2.json",
+              "dataset/xray20241203/val/labelTxt_keypoints_instance2",
               add_keypoints=True)
-    COCO2DOTA("dataset/xray20241203/val/bbox_val.json",
-              "dataset/xray20241203/val/labelTxt_points",
+    COCO2DOTA("dataset/xray20241203/test/rotate_bbox_keypoints_test_instance2.json",
+              "dataset/xray20241203/test/labelTxt_keypoints_instance2",
               add_keypoints=True)
+    
+
+    COCO2DOTA("dataset/xray20241203/train/rotate_bbox_keypoints_train_semantic2.json",
+              "dataset/xray20241203/train/labelTxt_keypoints_semantic2",
+              add_keypoints=True)
+    COCO2DOTA("dataset/xray20241203/val/rotate_bbox_keypoints_val_semantic2.json",
+              "dataset/xray20241203/val/labelTxt_keypoints_semantic2",
+              add_keypoints=True)
+    COCO2DOTA("dataset/xray20241203/test/rotate_bbox_keypoints_test_semantic2.json",
+              "dataset/xray20241203/test/labelTxt_keypoints_semantic2",
+              add_keypoints=True)
+    
+
+    # COCO2DOTA("dataset/xray20241203/train/rotate_bbox_keypoints_train_instance.json",
+    #           "dataset/xray20241203/train/labelTxt_instance",
+    #           add_keypoints=False)
+    # COCO2DOTA("dataset/xray20241203/val/rotate_bbox_keypoints_val_instance.json",
+    #           "dataset/xray20241203/val/labelTxt_instance",
+    #           add_keypoints=False)
+    # COCO2DOTA("dataset/xray20241203/test/rotate_bbox_keypoints_test_instance.json",
+    #           "dataset/xray20241203/test/labelTxt_instance",
+    #           add_keypoints=False)
+    
+
+    # COCO2DOTA("dataset/xray20241203/train/rotate_bbox_keypoints_train_semantic.json",
+    #           "dataset/xray20241203/train/labelTxt_semantic",
+    #           add_keypoints=False)
+    # COCO2DOTA("dataset/xray20241203/val/rotate_bbox_keypoints_val_semantic.json",
+    #           "dataset/xray20241203/val/labelTxt_semantic",
+    #           add_keypoints=False)
+    # COCO2DOTA("dataset/xray20241203/test/rotate_bbox_keypoints_test_semantic.json",
+    #           "dataset/xray20241203/test/labelTxt_semantic",
+    #           add_keypoints=False)
+

@@ -371,7 +371,7 @@ class LoadStreams:
 def img2label_paths(img_paths):
     # Define label paths as a function of image paths
     # sa, sb = os.sep + 'images' + os.sep, os.sep + 'labelTxt' + os.sep  # /images/, /labels/ substrings
-    sa, sb = os.sep + 'images' + os.sep, os.sep + 'labelTxt_points' + os.sep  # /images/, /labels/ substrings # keypoints
+    sa, sb = os.sep + 'images' + os.sep, os.sep + 'labelTxt_keypoints_instance2' + os.sep  # /images/, /labels/ substrings # keypoints
     return [sb.join(x.rsplit(sa, 1)).rsplit('.', 1)[0] + '.txt' for x in img_paths]
 
 
